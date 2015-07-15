@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+{% block head %}
+	<meta charset=utf-8 />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Bootstrap -->
+	<link href="static/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  	<script src="../static/js/jquery-1.10.2.js"></script>
+  	<script src="../static/js/jquery-ui.js"></script>
+  
+	<script src="../static/js/d3.v3.min.js" charset="utf-8"></script>
+	
+	<link rel="stylesheet" href="../static/style/leaflet.css" />
+	<script src="../static/js/leaflet.js"></script>
+
+	<link rel="stylesheet" href="../static/style/base.css" />
+	<script src="../static/js/viz.js"></script>
+{% endblock %}
+
+{% block map %}
+	<div class="row">
+		<div class="col-md-8">
+			<div id="map"></div>
+		</div>
+		<div class="col-xs-6 col-sm-3" id="details">
+			<h4><center>Filters</center></h4>
+			<div class="input-group">
+			  <span class="input-group-addon" id="basic-addon1">Date</span>
+			  <input type="text" id = "date" class="form-control" placeholder="Choose date" aria-describedby="basic-addon1">
+			</div>
+			<div class="input-group">
+			  <span class="input-group-addon" id="basic-addon1">Hour</span>
+			  <div class="form-control">
+					<input id='hourSlider' type='range' min='0' max='23' value='12' step='1' />
+					<span id='hourValue'>12</span>
+			  </div>
+			</div>
+			<br></br>
+			<h4><center>Cluster Details</center></h4>
+			<div class='disp'>
+				<section id='cls-disp'>
+					<clsLabel>Cluster: </clsLabel>
+					<name id='clusterNum'>none selected</name>
+				</section>
+				<section id='prob-disp'>
+					<probLabel>Probability of an event: </probLabel>
+					<name id='prob'>n/a</name>
+				</section>
+			</div>
+		</div>		
+	</div>
+
+	<br></br>
+	<br></br>
+
+	<script> 	
+		var availableDates = ["5-5-2015","17-4-2015","30-4-2015"]; // which dates have data
+
+		/* Helper for Date Picker */
+		function available(date) {
+			dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
+			if ($.inArray(dmy, availableDates) == -1) {
+	    		return [false, "","Unavailable"];
+	  		} 
+	  		else {
+	    		return [true,"","Available"];
+	  		}
+		}
+		/* Date Picker */
+		var datePicked, drawn = false;
+		$('#date').datepicker({ 
+	    	beforeShowDay: available,
+	    	dateFormat: "yy-mm-dd",
+	    	minDate: "2015-04-01",
+	    	maxDate: "2015-05-31",
+	    	onSelect: function(date) {
+	    		datePicked = date;
+	    		datePicked_nodash = datePicked.replace(/-/g,"");
+	    		var filepath = "../api/data/" + datePicked_nodash;
+	    		draw(filepath);
+	    		drawn = true;
+	    	}
+		});
+
+		/* Hour Slider */
+		var slider_hour = document.getElementById('hourSlider');
+		var hour = document.getElementById('hourValue');
+		slider_hour.addEventListener('input', function(){
+			hour.innerHTML = slider_hour.value;
+			console.log(hour.innerHTML);
+		}); 
+		
+		/* Map */
+		var map = new L.Map("map", {center: [14.5833, 121], zoom: 11})
+
+	    /* Using Mapbox Map */
+	    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	    	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+	    	maxZoom: 18,
+	    	minZoom: 10,
+	    	id: 'sabsci.25fd13a6',
+	    	accessToken: 'sk.eyJ1Ijoic2Fic2NpIiwiYSI6Ijg4MTRjOTRkZDkzNDUwZDgwZTNkMTE2YmY5ODk4MDE5In0.DhrE7z3rsSgBm_8tvjj4_w'
+		}).addTo(map);
+
+
+		/* Initialize the SVG layer */
+		map._initPathRoot()    
+
+		/* Setting up Map and SVG Overlay */
+		var bounds = map.getBounds(),
+	    	    topLeft = map.latLngToLayerPoint(bounds.getNorthWest()),
+	    	    bottomRight = map.latLngToLayerPoint(bounds.getSouthEast()),
+	    		existing = d3.set(),
+	    	  	drawLimit = bounds.pad(0.4);
+	    
+	    var svg = d3.select(map.getPanes().overlayPane).append("svg")
+			  .attr('id', 'overlay')
+			  .attr("class", "leaflet-zoom-hide")
+		      .style("width", map.getSize().x + 'px')
+		      .style("height", map.getSize().y + 'px')
+		      .style("margin-left", topLeft.x + "px")
+		      .style("margin-top", topLeft.y + "px");
+
+	    var g = svg.append("g")
+	    		.attr("transform", "translate(" + (-topLeft.x) + "," + (-topLeft.y) + ")");
+	    var svgPoints;
+	    var selectedCluster = 52; // initial selected cluster: cluster where Rufino Tower is located
+	
+	</script>
+{% endblock %}

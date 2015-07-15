@@ -1,0 +1,123 @@
+.page { 
+	margin: 1% auto; 
+	width: 60%; 
+	border: 5px solid #ccc; 
+	padding: 1%; 
+	background: white; 
+}
+
+body {
+	background: #eee;
+}
+
+.jumbotron{
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+h1, h2, h3, p {
+	text-align: center;
+}
+
+h1 {
+	border-bottom: 5px solid #aaa; 
+}
+
+h2 {
+	position: relative;
+	margin: auto;
+	/*float: top;*/
+}
+
+h3 {
+	position:relative;
+	margin-top:10%;
+}
+
+h4 {
+	font-weight: bold;
+}
+
+.page-header {
+	position: relative;
+	margin-top: 10%;
+}
+
+.row{
+	position: relative;
+	margin-left:50px;
+}
+
+#details{
+	margin-top: 10%;
+}
+#hourValue, #hourSlider {
+	position: relative;
+}
+
+#hourValue {
+	font-size: 12px;
+	float:right;
+}
+
+
+#map{
+	height: 500px; 
+	width: 600px; 
+	float:left;
+	margin:auto;
+}
+
+#datepicker {
+	position: relative;
+	float: left;
+	padding-left: 10%;
+}
+
+.hour {
+	position: relative;
+	float: right;
+	padding-right:10%;
+}
+
+.ui-datepicker {
+	width: 15%;
+	font-size: 9pt;
+}
+
+.point-cell {
+	pointer-events: all;
+	stroke: #000;
+	stroke-opacity: 0.8;
+	stroke-width: 0.5px;
+}
+
+.point-cell:hover {
+	fill: none;
+	stroke: #000;
+	stroke-opacity: 1;
+	stroke-width: 1.5px;
+}
+
+.point-cell.selected {
+	stroke-opacity: 1;
+	stroke-width: 2px;
+}
+
+#slider-top {
+		background-color: rgba(255,255,255,0.9);
+		padding: 7px 7px 3px 7px;
+}
+
+.slider { 
+	padding: 3px 7px 7px 7px;
+}
+
+.legend { 
+	font-size: .9em; 
+}
+
+.disp {
+	position: relative;
+	text-align: center;
+}
