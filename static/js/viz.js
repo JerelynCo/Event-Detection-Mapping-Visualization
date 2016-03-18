@@ -14,7 +14,7 @@
 			/* Continue listening to slider even if data is already drawn */
 			slider_hour.addEventListener('input', function(){
 				hour.innerHTML = slider_hour.value;
-				hr = hour.innerHTML;
+				hr = (hour.innerHTML).concat(".0");
 				update();
 			}); 
 	
@@ -101,7 +101,14 @@
       			.attr("d", buildPathFromPoint)
       			.style("fill","none")
       			.style("fill","green")
-      			.style("fill-opacity", function (d) { return 0.8*d[hr]})
+      			.style("fill-opacity", function (d) { 
+      				if(!d[hr]){
+      					return 0;
+      				}
+      				else {
+      					return 0.5;
+      				}
+      			})
       			.style("stroke","black")
       			.classed("selected", function(d) { return selectedCluster == d} )
       			.on("click", function(d) {

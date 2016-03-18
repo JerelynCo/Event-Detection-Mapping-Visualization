@@ -5,13 +5,13 @@ import pandas as pd
 app = Flask(__name__)
 api = Api(app)
 
-all_data = pd.read_csv("data/sample.csv")
+all_data = pd.read_csv("data/sample_new.csv")
 all_data.drop(all_data.columns[[0]], inplace=True, axis = 1)
 data = pd.DataFrame()
 
 class Data(Resource):
 	def get(self, date):
-		data = all_data[all_data['day'] == date]
+		data = all_data[all_data['day'] == int(date)]
 		return make_response(data.to_json(orient='records'))
 api.add_resource(Data,'/api/data/<string:date>')
 
