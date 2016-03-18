@@ -102,10 +102,12 @@
       			.style("fill","none")
       			.style("fill","green")
       			.style("fill-opacity", function (d) { 
-      				if (!d.hr)
+      				if(!d[hr]){
       					return 0;
-      				else
-      					return 0.5
+      				}
+      				else {
+      					return 0.5;
+      				}
       			})
       			.style("stroke","black")
       			.classed("selected", function(d) { return selectedCluster == d} )
