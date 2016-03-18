@@ -32,10 +32,10 @@
 			  <input type="text" id = "date" class="form-control" placeholder="Choose date" aria-describedby="basic-addon1">
 			</div>
 			<div class="input-group">
-			  <span class="input-group-addon" id="basic-addon1">Hour</span>
+			  <span class="input-group-addon" id="basic-addon1">Hour <span id='hourValue'>12</span></span>
 			  <div class="form-control">
 					<input id='hourSlider' type='range' min='0' max='23' value='12' step='1' />
-					<span id='hourValue'>12</span>
+					
 			  </div>
 			</div>
 			<br></br>
@@ -46,7 +46,7 @@
 					<name id='clusterNum'>none selected</name>
 				</section>
 				<section id='prob-disp'>
-					<probLabel>Probability of an event: </probLabel>
+					<probLabel>Coeff of Standard Deviation: </probLabel>
 					<name id='prob'>n/a</name>
 				</section>
 			</div>
@@ -88,9 +88,11 @@
 		/* Hour Slider */
 		var slider_hour = document.getElementById('hourSlider');
 		var hour = document.getElementById('hourValue');
+		var hr = hour.innerHTML.concat(".0");
 		slider_hour.addEventListener('input', function(){
 			hour.innerHTML = slider_hour.value;
 			console.log(hour.innerHTML);
+			hr = (hour.innerHTML).concat(".0");
 		}); 
 		
 		/* Map */
